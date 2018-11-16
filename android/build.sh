@@ -3,6 +3,8 @@ set -euo pipefail
 
 ../tools-public/generate-dynamic-macros-android.sh
 
+yes | sdkmanager --licenses --sdk_root="$ANDROID_SDK_ROOT" || true
+
 # download dependencies in retry loop to reduce network-caused errors
 for i in {1..3}; do ((i > 1)) && sleep 5; ./gradlew --stacktrace :app:preBuild && break; done
 
