@@ -15,13 +15,15 @@ mkShell {
   nativeBuildInputs = [
     nodejs-8_x
     openjdk8
-    androidenv.androidsdk_9_0 # Only used for `sdkmanager`
   ];
 
   passthru = { inherit ndk ndk_root; };
 
   shellHook = ''
     ./install-ndk-17c.sh
+    if ! which sdkmanager&>/dev/null; then
+      ${androidenv.androidsdk_9_0}/bin/sdkmanager --install "tools" --sdk_root="$ANDROID_SDK_ROOT"
+    fi
     ${lib.optionalString stdenv.isLinux ''
       for dep in lib lib64; do
         if [ -L /$dep ] || [ ! -e /$dep ]; then
