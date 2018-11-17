@@ -21,9 +21,7 @@ mkShell {
 
   shellHook = ''
     ./install-ndk-17c.sh
-    if ! which sdkmanager&>/dev/null; then
-      ${androidenv.androidsdk_9_0}/bin/sdkmanager --install "tools" --sdk_root="$ANDROID_SDK_ROOT"
-    fi
+    ${androidenv.androidsdk_9_0}/bin/sdkmanager --install "tools" --sdk_root="$ANDROID_SDK_ROOT"
     ${lib.optionalString stdenv.isLinux ''
       for dep in lib lib64; do
         if [ -L /$dep ] || [ ! -e /$dep ]; then
